@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography, Container, Paper, Box } from '@mui/material';
-import { MedicalServices } from '@mui/icons-material';
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Paper,
+  Box,
+} from "@mui/material";
+import { MedicalServices } from "@mui/icons-material";
 
 function Register() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullname, setFullname] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async (e) => {
@@ -16,40 +23,45 @@ function Register() {
       username,
       password,
       fullname,
-      role: 'user',
+      role: "user",
     };
 
     try {
-      const response = await fetch('http://your-backend-api/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newUser),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/auth/register",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(newUser),
+        }
+      );
 
       if (response.ok) {
-        alert('Registration successful! Please login.');
-        navigate('/login');
+        alert("Registration successful! Please login.");
+        navigate("/login");
       } else {
-        alert('Registration failed! Username may already exist.');
+        alert("Registration failed! Username may already exist.");
       }
     } catch (error) {
-      alert('An error occurred during registration.');
+      alert("An error occurred during registration.");
     }
   };
 
   return (
     <Box
       sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        bgcolor: 'background.default',
-        backgroundImage: 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)',
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        bgcolor: "background.default",
+        backgroundImage: "linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)",
       }}
     >
       <Container maxWidth="xs">
-        <Paper elevation={3} sx={{ p: 4, textAlign: 'center' }}>
-          <MedicalServices sx={{ fontSize: 50, color: 'primary.main', mb: 2 }} />
+        <Paper elevation={3} sx={{ p: 4, textAlign: "center" }}>
+          <MedicalServices
+            sx={{ fontSize: 50, color: "primary.main", mb: 2 }}
+          />
           <Typography variant="h5" gutterBottom>
             Register
           </Typography>

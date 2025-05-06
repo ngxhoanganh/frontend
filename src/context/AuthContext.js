@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -11,20 +11,22 @@ export function AuthProvider({ children }) {
     setUser(userData);
     setToken(authToken);
     setRole(userRole);
-    localStorage.setItem('token', authToken);
-    localStorage.setItem('role', userRole);
+    localStorage.setItem("token", authToken);
+    localStorage.setItem("role", userRole);
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
     setRole(null);
-    localStorage.removeItem('token');
-    localStorage.removeItem('role');
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, role, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, token, role, login, logout, setToken }}
+    >
       {children}
     </AuthContext.Provider>
   );
