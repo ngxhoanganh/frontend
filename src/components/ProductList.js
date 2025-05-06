@@ -40,7 +40,7 @@ function ProductList() {
   const fetchProducts = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL_API}/product?page=${page}`,
+        `${process.env.REACT_APP_SERVER_URL_API}/product?page=${page}&keyword=${searchText}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -56,7 +56,7 @@ function ProductList() {
 
   useEffect(() => {
     fetchProducts();
-  }, [token, page]);
+  }, [token, page, searchText]);
 
   const columns = [
     {

@@ -60,7 +60,7 @@ function OrderList() {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL_API}/order?page=${page}`,
+        `${process.env.REACT_APP_SERVER_URL_API}/order?page=${page}&keyword=${searchText}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -164,12 +164,12 @@ function OrderList() {
   useEffect(() => {
     fetchOrders();
     fetchCustomers();
-  }, [token, page]);
+  }, [token, page, searchText]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
-    { field: "product", headerName: "Product", width: 200 },
-    { field: "distributor", headerName: "Distributor", width: 150 },
+    { field: "product", headerName: "Product", width: 250 },
+    { field: "distributor", headerName: "Distributor", width: 250 },
     { field: "quantity", headerName: "Quantity", width: 100 },
     { field: "customer", headerName: "Customer", width: 200 },
     { field: "createdAt", headerName: "Created At", width: 200 },

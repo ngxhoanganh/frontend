@@ -1,4 +1,4 @@
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import { Box, Toolbar, Grid, Paper, Typography } from "@mui/material";
 import { Bar } from "react-chartjs-2";
@@ -18,30 +18,53 @@ import DistributorList from "./DistributorList";
 import TeamList from "./TeamList";
 import OrderList from "./OrderList";
 import UserManagement from "./UserManagement";
+import ProtectedRoute from "../routes/ProtectedRoute";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
+// ChartJS.register(
+//   CategoryScale,
+//   LinearScale,
+//   BarElement,
+//   Title,
+//   Tooltip,
+//   Legend
+// );
 
 const drawerWidth = 240;
 
-const chartData = {
-  labels: ["Oxymotroban Fexoforrmin", "Amavirse", "Paronim Atracustone"],
-  datasets: [
-    {
-      label: "Stock",
-      data: [20, 7, 2],
-      backgroundColor: "#2e7d32",
-    },
-  ],
-};
+// const chartData = {
+//   labels: ["Oxymotroban Fexoforrmin", "Amavirse", "Paronim Atracustone"],
+//   datasets: [
+//     {
+//       label: "Stock",
+//       data: [20, 7, 2],
+//       backgroundColor: "#2e7d32",
+//     },
+//   ],
+// };
 
 function Dashboard() {
+  const [data, setData] = useState({});
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_SERVER_URL_API}/dashboard`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      const result = await response.json();
+      setData(result.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
   return (
     <Box sx={{ display: "flex" }}>
       <Sidebar />
@@ -61,35 +84,36 @@ function Dashboard() {
             path="/"
             element={
               <Box>
-                <Typography variant="h5" gutterBottom>
-                  Overview
-                </Typography>
-                <Grid container spacing={3}>
-                  <Grid item xs={12} sm={4}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      <Typography variant="h6">Total Products</Typography>
-                      <Typography variant="h4" color="primary">
-                        3
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      <Typography variant="h6">Orders This Month</Typography>
-                      <Typography variant="h4" color="primary">
-                        2
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12} sm={4}>
-                    <Paper sx={{ p: 2, textAlign: "center" }}>
-                      <Typography variant="h6">Distributors</Typography>
-                      <Typography variant="h4" color="primary">
-                        1
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                  <Grid item xs={12}>
+                <Box>
+                  <Typography variant="h5" gutterBottom>
+                    Overview
+                  </Typography>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sm={4}>
+                      <Paper sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h6">Total Products</Typography>
+                        <Typography variant="h4" color="primary">
+                          {data?.total_products}
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Paper sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h6">Orders This Month</Typography>
+                        <Typography variant="h4" color="primary">
+                          {data?.order_this_month}
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                      <Paper sx={{ p: 2, textAlign: "center" }}>
+                        <Typography variant="h6">Distributors</Typography>
+                        <Typography variant="h4" color="primary">
+                          {data?.total_distributors}
+                        </Typography>
+                      </Paper>
+                    </Grid>
+                    {/* <Grid item xs={12}>
                     <Paper sx={{ p: 3 }}>
                       <Typography variant="h6" gutterBottom>
                         Product Stock Chart
@@ -105,8 +129,18 @@ function Dashboard() {
                         }}
                       />
                     </Paper>
+                  </Grid> */}
                   </Grid>
-                </Grid>
+                </Box>
+                <Box
+                  sx={{
+                    height: 500,
+                    marginTop: "16px",
+                    backgroundColor: "white",
+                  }}
+                >
+                  BI HERE
+                </Box>
               </Box>
             }
           />

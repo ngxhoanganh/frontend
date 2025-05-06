@@ -38,7 +38,7 @@ function DistributorList() {
   const fetchDistributors = async () => {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_SERVER_URL_API}/distributor?page=${page}`,
+        `${process.env.REACT_APP_SERVER_URL_API}/distributor?page=${page}&keyword=${searchText}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -56,15 +56,21 @@ function DistributorList() {
 
   useEffect(() => {
     fetchDistributors();
-  }, [token, page]);
+  }, [token, page, searchText]);
 
   const columns = [
-    { field: "id", headerName: "ID", width: 90 },
-    { field: "name", headerName: "Distributor Name", width: 700 },
+    { field: "id", headerName: "ID", width: 90, sortable: false },
+    {
+      field: "name",
+      headerName: "Distributor Name",
+      width: 700,
+      sortable: false,
+    },
     {
       field: "actions",
       headerName: "Actions",
       width: 150,
+      sortable: false,
       renderCell: (params) => (
         <Box>
           <IconButton onClick={() => handleEdit(params.row)}>
